@@ -1,0 +1,81 @@
+<h2>{{title}}</h2>
+<form method="post" name="config">
+<div class="row">
+</form>
+    <div class="columns">
+        <label for="station_name">Station Name</label>
+        <input type="text" name="station_name" id="station_name" value="{{station_name}}">
+    </div>
+    <div class="columns">
+        <label for="club_call">Club Call</label>
+        <input type="text" name="club_call" id="club_call" value="{{club_call}}">
+    </div>
+    <div class="columns">
+        <label for="class">Class</label>
+        <input type="text" name="class" id="class" value="{{class}}">
+    </div>
+    <div class="columns">
+        <label for="section">Section</label>
+        <select name="section" id="section">
+             {{#each sections }}
+             <option value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{id}}</option>
+               {{/each}}
+        </select>
+    </div>
+    <div class="columns">
+        <label for="radio">Radio</label>
+        <select name="radio" id="radio">
+            <option value="">-- Disabled --</option>
+             {{#each radios }}
+             <option value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{model}}</option>
+               {{/each}}
+        </select>
+    </div>
+    <div class="columns" id="div_civaddress">
+        <label for="civaddress">Radio</label>
+        <input type="text" name="civaddress" id="civaddress" value="{{civaddress}}">
+    </div>
+    <div class="columns">
+        <label for="port_speed">Port Speed</label>
+        <input type="text" name="port_speed" id="port_speed" placeholder="19200" value="{{port_speed}}">
+    </div>
+	<div class="columns">
+        <label for="port">Port</label>
+        <input type="text" name="port" id="port" value="{{port}}">
+    </div>
+    
+	
+	<div class="columns">
+		<div class="row">
+			<div class="columns large-6">
+        		<input type="submit" class="button" />
+        	</div>
+        	<div class="columns large-6">
+                <a href="contacts" class="button secondary">Cancel</a>
+        	</div>
+        </div>
+    </div>
+
+</div>
+</form>
+<script>
+$(function(){
+   
+    if($("#radio").find("option:selected").html().indexOf('Icom') >= 0) { 
+    	
+    		$("#div_civaddress").show();
+    }
+
+    $('#radio').change(function(){
+        if($(this).find("option:selected").html().indexOf('Icom') >= 0) { 
+            $("#div_civaddress").show();
+        } else { 
+        	$("#div_civaddress").hide();
+            $("#civaddress").val(null);
+        }
+        //console.log($(this).val());
+    });
+
+
+});
+</script>

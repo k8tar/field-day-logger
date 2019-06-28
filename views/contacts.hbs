@@ -1,0 +1,74 @@
+<form method="post">
+    <div id="options">
+        <div id="div_band">
+            <label for="band">Band</label>
+
+            <select name="band" id="band">
+                {{#each bands }}
+                <option value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{id}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <div id="div_mode">
+            <label for="mode">Mode</label>
+
+            <select name="mode" id="mode">
+                {{#each modes }}
+                <option value="{{id}}" {{#selected}}selected="selected"{{/selected}}>{{id}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+    <div id="div_operator">
+        <label for="operator_callsign">Operator Callsign</label>
+        <input type="text" name="operator_callsign" id="operator_callsign" value={{operator_callsign}}>
+    </div>
+    <div id="update_button">
+        <input type="hidden" name="operation" value="update">
+        <button id="update">Update</button>
+    </div>
+</form>
+
+
+<div id="contacts">
+    <table>
+        <thead>
+            <tr>
+                <th><label for="callsign">Callsign</label></th>
+                <th><label for="callsign">Section</label></th>
+                <th><label for="callsign">Class</label></th>
+                <th></th>
+            </tr>
+            <form method="post">
+            <tr>
+                <th><input type="text" id="callsign" name="callsign" autocomplete="false"></th>
+                <th><input type="text" id="section" name="section" autocomplete="false"></th>
+                <th><input type="text" id="class" name="class" autocomplete="false"></th>
+                <th><button type="submit">Add Contact</button></th>
+            </tr>
+            <input type="hidden" name="operator_callsign" value="{{operator_callsign}}">
+            <input type="hidden" name="band" value="{{band}}">
+            <input type="hidden" name="mode" value="{{mode}}">
+            <input type="hidden" name="station_name" value="{{station_name}}">
+            <input type="hidden" name="operation" value="add_contact">
+            </form>
+            <tr>
+                <th colspan="4">Total Contacts: {{contacts.length}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each contacts }}
+                <tr>
+                    <td>{{callsign}}</td>
+                    <td>{{class}}</td>
+                    <td>{{section}}</td>
+                </tr>
+            {{/each }}
+        </tbody>
+        <tfoot>
+            <tr>
+                <th colspan="4">Total Contacts: {{contacts.length}}</th>
+            </tr>
+        </tfoot>
+    </table>
+</div>
