@@ -2,7 +2,12 @@
 <html>
   <head>
     <title>{{title}}</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/javascripts/jquery-3.4.1.min.js"></script>
+    <style>
+      #navigation ul li { list-style: none; float:left; margin: 10px; }
+      #body { clear:left; }
+    </style>
   </head>
   <body>
     <div id="navigation">
@@ -11,6 +16,8 @@
         <li><a href="/config">Config</a></li>
       </ul>
     </div>
+    <div id="body">
     {{{body}}}
+    </div>
   </body>
 </html>

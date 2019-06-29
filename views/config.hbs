@@ -31,17 +31,19 @@
                {{/each}}
         </select>
     </div>
-    <div class="columns" id="div_civaddress">
-        <label for="civaddress">Radio</label>
-        <input type="text" name="civaddress" id="civaddress" value="{{civaddress}}">
-    </div>
-    <div class="columns">
-        <label for="port_speed">Port Speed</label>
-        <input type="text" name="port_speed" id="port_speed" placeholder="19200" value="{{port_speed}}">
-    </div>
-	<div class="columns">
-        <label for="port">Port</label>
-        <input type="text" name="port" id="port" value="{{port}}">
+    <div id="radio-options" style="display:none;">
+        <div class="columns" id="div_civaddress">
+            <label for="civaddress">CIV Address</label>
+            <input type="text" name="civaddress" id="civaddress" value="{{civaddress}}">
+        </div>
+        <div class="columns">
+            <label for="port_speed">Port Speed</label>
+            <input type="text" name="port_speed" id="port_speed" placeholder="19200" value="{{port_speed}}">
+        </div>
+        <div class="columns">
+            <label for="port">Port</label>
+            <input type="text" name="port" id="port" value="{{port}}">
+        </div>
     </div>
     
 	
@@ -59,23 +61,33 @@
 </div>
 </form>
 <script>
-$(function(){
-   
-    if($("#radio").find("option:selected").html().indexOf('Icom') >= 0) { 
-    	
-    		$("#div_civaddress").show();
-    }
+    $(function(){
 
-    $('#radio').change(function(){
-        if($(this).find("option:selected").html().indexOf('Icom') >= 0) { 
-            $("#div_civaddress").show();
-        } else { 
-        	$("#div_civaddress").hide();
-            $("#civaddress").val(null);
+        $('#radio').change(function(){
+            show_or_hide();
+        });
+
+        function show_or_hide(select) { 
+
+            
+            if($('#radio').val() == '') { 
+                $('#radio-options').hide();
+                $('#radio-options input').each(function(input){
+                    $(input).val(null);
+                });
+            } else { 
+                $('#radio-options').show();
+                if($('#radio').find("option:selected").html().indexOf('Icom') >= 0) { 
+                $("#div_civaddress").show();
+            } else { 
+                $("#div_civaddress").hide();
+                $("#civaddress").val(null);
+            }
+            }
+
         }
-        //console.log($(this).val());
+
+        show_or_hide();
+
     });
-
-
-});
 </script>
