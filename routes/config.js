@@ -153,7 +153,7 @@ router.get('/radio', async function(req, res, next) {
         band: band
     }
 
-    console.log(JSON.stringify(settings));
+    //console.log(JSON.stringify(settings));
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(settings));
 });

@@ -44,8 +44,8 @@
 
 <div id="sections-list">
     {{#each sections }}
-    <div class="area" id="area-{{id }}">
-        <h2>{{id }}</h2>
+    <div class="area" id="area-{{name }}">
+        <h2>{{name }}</h2>
     {{#each values }}
         <div class="section" id="section-{{name }}">{{ name }}</div>
     {{/each }}
@@ -58,9 +58,10 @@
     <table id="contacts">
         <thead>
             <tr>
-                <th colspan="7"><div id="message"></div></th>
+                <th colspan="8"><div id="message"></div></th>
             </tr>
             <tr>
+                <td></td>
                 <td><strong>Log : </strong></td>
                 <td><input type="text" id="callsign" name="callsign" autocomplete="off"></td>
                 <td><input type="text" id="class" name="class" autocomplete="off"></td>
@@ -68,6 +69,7 @@
                 <td colspan="3"><button id="add_contact">Add Contact</button></td>
             </tr>
             <tr>
+                <th></th>
                 <th>Time</th>
                 <th><label for="callsign">Callsign</label></th>
                 <th><label for="Class">Class</label></th>
@@ -79,10 +81,6 @@
             <input type="hidden" id="station_name" name="station_name" value="{{station_name}}">
             <input type="hidden" name="radio" value="{{radio}}">
             </form>
-            <tr>
-                <th id="sum-label" colspan="6">Total Contacts: </th>
-                <th id="sum"></th>
-            </tr>
         </thead>
         <tbody></tbody>
     </table>
@@ -144,6 +142,11 @@
             return new Promise(async (resolve, reject) => {
                 try {
                     var contacts = [];
+                    console.log({
+                        callsign: $('#callsign').val(),
+                                band: $('#band').val(),
+                                mode: $('#mode').val()
+                    });
                     $.ajax({
                         url: "/contacts/find",
                         method: 'POST',
@@ -157,6 +160,7 @@
 
                     })
                     .done(function( data ) {
+                        console.log('check dupe : ' + data);
                         if(data.length > 0) { 
                             return resolve(true); 
                         } else { 
@@ -199,6 +203,12 @@
                             data: contact,
                             success: function() {
                                 load_contacts();
+
+                                $('#callsign').val(null);
+                                $('#class').val(null);
+                                $('#section').val(null);
+                                $('#callsign').focus();
+                                
                             }
                         });
                     }
@@ -215,11 +225,10 @@
                 $('#contacts tbody').html('');
                 if(data.length > 0) {
                     data.forEach(function(row) { 
-                        $('#contacts tbody').append('<tr><td>' + row.timestamp + '</td><td>' + row.callsign + '</td><td>' + row.class + '</td><td class="contacts-section">' + row.section + '</td><td>' + row.band + '</td><td>' + row.mode + '</td><td>' + row.station_name +'</td></tr>');
+                        $('#contacts tbody').append('<tr><td><a href="/contacts/edit/' + row._id + '">edit</a>&nbsp;<a href="/contacts/delete/' + row._id + '">delete</a><td>' + row.timestamp + '</td><td>' + row.callsign + '</td><td>' + row.class + '</td><td class="contacts-section">' + row.section + '</td><td>' + row.band + '</td><td>' + row.mode + '</td><td>' + row.station_name +'</td></tr>');
                     });
                     
                 }  
-                    $('#sum').text(data.length);
             });
         
     }

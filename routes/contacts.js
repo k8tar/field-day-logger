@@ -54,11 +54,11 @@ router.get('/', async function(req, res, next) {
     db_sections = await db_sections.list({include_docs: true}) 
     await db_sections.rows.forEach(async function(section){
       if(!sections[section.doc.area]) { 
-        sections[section.doc.area] = {id:section.doc.area, values:[]};
+        sections[section.doc.area] = {name:section.doc.area, values:[]};
+        
       }
-      sections[section.doc.area].values.push({value:section.id});
-      
-      //sects[section.doc.area].push(section.id);
+      sections[section.doc.area].values.push({name:section.doc.name});
+  
     });
     
  
@@ -93,7 +93,7 @@ router.get('/', async function(req, res, next) {
 router.post('/', async function(req, res, next) {
       
       if(req.body.callsign.trim() != '' && req.body.section.trim() != '' && req.body.class.trim() != '') { 
-        console.log(req.body);
+        //console.log(req.body);
         var contact = {
             timestamp: moment().format('YYYY-MM-DD hh:mm:ss'),
             callsign: req.body.callsign.toString().trim(),
@@ -148,7 +148,7 @@ router.get('/json', async function(req, res, next) {
   
   
   var contacts = [];
-  console.log(db_contacts.rows);
+  //console.log(db_contacts.rows);
   if(db_contacts.rows) { 
     db_contacts.rows.forEach(function(contact) {
       contact.doc.timestamp = moment(contact.doc.timestamp).format('M/D h:mm A');
