@@ -117,20 +117,18 @@ router.post('/', async function(req, res, next) {
 });
 
 router.post('/find', async function(req, res, next) {
-      var query = req.query;
-  
+    //  var query = req.query;
       var query = {
         callsign: {'$eq':req.body.callsign},
         band: {'$eq' : req.body.band},
         mode: {'$eq' : req.body.mode}
       
-      }
+      } 
   
       var db_contacts = nano.use('contacts');
       var result = await db_contacts.find({
         selector: query
       });
-    
       res.send(result.docs);
   
 });
@@ -144,7 +142,7 @@ router.get('/json', async function(req, res, next) {
   res.setHeader('Content-Type', 'application/json');
 
   var db_contacts = nano.use('contacts');
-  db_contacts = await db_contacts.list({include_docs: true});
+  db_contacts = await db_contacts.list({include_docs: true, descending: true});
   
   
   var contacts = [];

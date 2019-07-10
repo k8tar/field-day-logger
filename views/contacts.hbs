@@ -58,7 +58,7 @@
     <table id="contacts">
         <thead>
             <tr>
-                <th colspan="8"><div id="message"></div></th>
+                <th colspan="9"><div id="message"></div></th>
             </tr>
             <tr>
                 <td></td>
@@ -66,7 +66,7 @@
                 <td><input type="text" id="callsign" name="callsign" autocomplete="off"></td>
                 <td><input type="text" id="class" name="class" autocomplete="off"></td>
                 <td><input type="text" id="section" name="section" autocomplete="off"></td>
-                <td colspan="3"><button id="add_contact">Add Contact</button></td>
+                <td colspan="4"><button id="add_contact">Add Contact</button></td>
             </tr>
             <tr>
                 <th></th>
@@ -77,6 +77,7 @@
                 <th>Band</th>
                 <th>Mode</th>
                 <th>Station</th>
+                <th>Operator</th>
             </tr>
             <input type="hidden" id="station_name" name="station_name" value="{{station_name}}">
             <input type="hidden" name="radio" value="{{radio}}">
@@ -102,11 +103,7 @@
             $(this).val($(this).val().toUpperCase());
 
         });
-        
 
-
-
-        
         schedule();
 
         function schedule() { 
@@ -139,32 +136,23 @@
         }
 
         async function check_dupe() { 
-            return new Promise(async (resolve, reject) => {
+            return new Promise((resolve, reject) => {
                 try {
                     var contacts = [];
-                    console.log({
-                        callsign: $('#callsign').val(),
-                                band: $('#band').val(),
-                                mode: $('#mode').val()
-                    });
                     $.ajax({
                         url: "/contacts/find",
                         method: 'POST',
                         data: {
-                            selector: {
                                 callsign: $('#callsign').val(),
                                 band: $('#band').val(),
                                 mode: $('#mode').val()
-                            }
                         }
 
                     })
                     .done(function( data ) {
-                        console.log('check dupe : ' + data);
                         if(data.length > 0) { 
                             return resolve(true); 
                         } else { 
-                            // return false; 
                             return resolve(false);
                         }
                     });
@@ -176,6 +164,28 @@
         }
 
         load_contacts();
+
+        $('#callsign').blur(function(){
+            if($('#callsign').val() != '') { 
+                check_dupe().then(function(dupe){
+                    if(dupe===true) { 
+                        $('#message').text('Duplicate Contact');
+                        $('#message').addClass('background-red');
+                        $('#callsign').addClass('background-red');
+                        $('#callsign').select();
+                    } else { 
+                        $('#message').text('');
+                        $('#message').removeClass('background-red');
+                        $('#callsign').removeClass('background-red');
+                    }
+                });
+                
+            } else { 
+                $('#message').text('');
+                $('#message').removeClass('background-red');
+                $('#callsign').removeClass('background-red');
+            }
+        });
 
         $('#form-contact').on('submit', async function(e) {
                 e.preventDefault();
@@ -225,7 +235,7 @@
                 $('#contacts tbody').html('');
                 if(data.length > 0) {
                     data.forEach(function(row) { 
-                        $('#contacts tbody').append('<tr><td><a href="/contacts/edit/' + row._id + '">edit</a>&nbsp;<a href="/contacts/delete/' + row._id + '">delete</a><td>' + row.timestamp + '</td><td>' + row.callsign + '</td><td>' + row.class + '</td><td class="contacts-section">' + row.section + '</td><td>' + row.band + '</td><td>' + row.mode + '</td><td>' + row.station_name +'</td></tr>');
+                        $('#contacts tbody').append('<tr><td><a href="/contacts/edit/' + row._id + '">edit</a>&nbsp;<a href="/contacts/delete/' + row._id + '">delete</a><td>' + row.timestamp + '</td><td>' + row.callsign + '</td><td>' + row.class + '</td><td class="contacts-section">' + row.section + '</td><td>' + row.band + '</td><td>' + row.mode + '</td><td>' + row.station_name +'</td><td>' + row.operator_callsign +'</td></tr>');
                     });
                     
                 }  

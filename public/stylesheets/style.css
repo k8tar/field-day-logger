@@ -12,3 +12,12 @@ input, select, button {
   height: 2em;
   width:100%;
 }
+
+.background-red { 
+  
+  color:#f00 !important;
+
+}
+#callsign, #class, #section { 
+  font-weight:bold;
+}
