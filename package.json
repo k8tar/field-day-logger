@@ -10,7 +10,7 @@
     "debug": "~2.6.9",
     "express": "~4.16.1",
     "handlebars-group-by": "^1.0.1",
-    "hbs": "~4.0.4",
+    "hbs": "~4.2.0",
     "http-errors": "~1.6.3",
     "moment": "^2.24.0",
     "morgan": "~1.9.1",
